@@ -1,4 +1,8 @@
 /* miniprogram/pages/home/index.wxss */
+page{
+    padding-bottom:140rpx;
+    background-color: #fff;
+}
 button{
   padding:0;
   margin:0;

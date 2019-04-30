@@ -1,30 +1,27 @@
+const app = getApp();
 Component({
   data: {
     selected: 0,
     color: "#7A7E83",
     selectedColor: "#3cc51f",
-    list: [
-      {
+    list: [{
         "pagePath": "/pages/home/index",
         "iconPath": "/images/icon_component.png",
-        "selectedIconPath": "/images/icon_component_HL.png",
-        "text": "组件"
+        "selectedIconPath": "/images/icon_component_HL.png"
       },
       {
         "pagePath": "/page/index/index",
         "iconPath": "/images/icon_API.png",
-        "selectedIconPath": "/images/icon_API_HL.png",
-        "text": "接口"
+        "selectedIconPath": "/images/icon_API_HL.png"
       }
     ]
   },
-  attached() {
-  },
+  attached() {},
   methods: {
     switchTab(e) {
       const data = e.currentTarget.dataset
       const url = data.path
-      wx.switchTab({url})
+      wx.switchTab({ url })
       this.setData({
         selected: data.index
       })
