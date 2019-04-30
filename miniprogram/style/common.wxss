@@ -1,0 +1,38 @@
+
+/* 公用css */
+.h100{
+  height: 100%;
+}
+.w100{
+  width: 100%;
+}
+.flex {
+  display: flex;
+}
+.flex-y{
+  flex-direction: column;
+}
+.flex-c{
+  align-items: center;
+}
+.flex-jc{
+  justify-content: center;
+}
+.flex-end{
+  justify-content: flex-end;
+}
+.p-r-40{
+  padding-right: 40rpx;
+}
+.two-line {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.one-line {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}

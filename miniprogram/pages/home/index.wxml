@@ -1,0 +1,46 @@
+<view class="flex flex-y flex-c">
+  <!-- 头部 -->
+  <view class="head">
+    <view class="flex flex-c flex-jc search">
+      <input class="search-input" bindinput='getSearch' placeholder='你想记起哪天的你呢'></input>
+      <l-icon name="backward" catchtap='searchFy' color="{{theme}}" />
+    </view>
+    <image src='{{banner}}' mode='aspectFill' class="banner-img"></image>
+  </view>
+  <!-- 头像 -->
+  <view class="w100 yyzj flex flex-c flex-jc">
+    <view class='ava-box flex flex-c flex-jc'>
+      <view class="ava">
+        <open-data type="userAvatarUrl"></open-data>
+      </view>
+      <image class="ava-bg" src="../../images/ava_bg.png"></image>
+    </view>
+    <l-icon bindtap='editMotto' size='30' class="p-r-40 edit" name="{{!edit?'edit':'success'}}" color="{{!edit?theme:'#09bb07'}}" />
+    <view class='prover-box'>
+      <view>一语箴已</view>
+      <textarea style="line-height:1.556;word-wrap:break-word" wx:if="{{edit}}" focus='{{edit}}' value='{{home.motto}}' bindinput="mottoFy" placeholder='一句可以让你警觉的话'></textarea>
+      <text style="line-height:1.556;word-wrap:break-word" wx:else>{{home.motto}}</text>
+    </view>
+  </view>
+  <!-- 列表 -->
+  <view class="article-content flex flex-y flex-c">
+    <block wx:for="{{home.articles}}" wx:key="arrs" wx:for-item="atc">
+      <view class="date">{{atc.date}}</view>
+      <block wx:for="{{atc.ats}}" wx:key="arr"  wx:for-item="item" >
+        <!-- cover -->
+        <l-card class="arts" type="cover" data-id="{{item.id}}" image="{{item.image_url}}" title="{{item.title}}"  bindtap="toDetaile">
+          <view class="content">{{item.digest}}</view>
+          <view class="flex flex-c more" catchtap='ret'>
+            <!-- <l-icon class="p-r-40" name="like" color="{{theme}}" /> -->
+            <l-icon size='36' data-id="{{item.id}}" data-date="{{atc.date}}" data-visible="{{item.visible}}" catchtap='canShow' class="p-r-40" name="{{item.visible?'eye':'password'}}" color="{{theme}}" />
+            <button data-id="{{item.id}}" data-title="{{item.title}}" data-image="{{item.image_url}}" open-type="share" hover-stop-propagation="true"  class="p-r-40"><l-icon size='34'  name="share" color="{{theme}}" /></button>
+            <l-icon data-id="{{item.id}}" data-date="{{atc.date}}" catchtap='deleteFy' size='36' class="p-r-40" name="delete" color="{{theme}}" />
+          </view>
+        </l-card>
+      </block>
+    </block>
+  </view>
+  <l-dialog />
+  <l-toast />
+  <l-message />
+</view>

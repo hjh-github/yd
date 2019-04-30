@@ -1,0 +1,9 @@
+<!--miniprogram/pages/atc_detail/detail.wxml-->
+<view class="flex flex-y container">
+  <view class="title two-line">{{config.title}}</view>
+  <view class="tips"><text>来源：<text style="color:{{theme}};padding-right:20px">{{config.author}}</text></text><text>{{config.date}}</text></view>
+  <view class='banner'>
+    <image mode='widthFix' src="{{config.image_url}}" class='banner'></image>
+  </view>
+  <text class="content">{{config.content}}</text>
+</view>

@@ -1,0 +1,32 @@
+/* miniprogram/pages/atc_detail/detail.wxss */
+
+.banner {
+  width: 690rpx;
+}
+
+.container {
+  width: 690rpx;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.title {
+  width: 690rpx;
+  font-size: 40rpx;
+  margin: 20px 0 10px;
+  text-align: left;
+}
+
+.tips {
+  width: 690rpx;
+  font-size: 26rpx;
+  margin-bottom: 10px;
+  text-align: left;
+  color:#bbb
+}
+
+.content{
+  margin:20px 0;
+  font-size:30rpx;
+  color:#555;
+}

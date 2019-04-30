@@ -1,0 +1,48 @@
+{
+  "pages": [
+    "pages/home/index",
+    "page/index/index",
+    "page/userConsole/userConsole",
+    "page/storageConsole/storageConsole",
+    "page/databaseGuide/databaseGuide",
+    "page/addFunction/addFunction",
+    "page/deployFunctions/deployFunctions",
+    "page/chooseLib/chooseLib",
+    "page/openapi/openapi",
+    "pages/atc_detail/detail"
+  ],
+  "tabBar": {
+    "custom": true,
+    "color": "#7A7E83",
+    "selectedColor": "#3cc51f",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "iconPath": "images/icon_component.png",
+        "selectedIconPath": "images/icon_component_HL.png",
+        "text": "组件"
+      },
+      {
+        "pagePath": "page/index/index",
+        "iconPath": "images/icon_API.png",
+        "selectedIconPath": "images/icon_API_HL.png",
+        "text": "接口"
+      }
+    ]
+  },
+  "window": {
+    "backgroundColor": "#F6F6F6",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "",
+    "navigationBarTextStyle": "black"
+  },
+  "sitemapLocation": "sitemap.json",
+  "usingComponents": {
+    "l-icon": "./miniprogram_npm/lin-ui/icon/index",
+    "l-toast": "./miniprogram_npm/lin-ui/toast/index",
+    "l-dialog": "./miniprogram_npm/lin-ui/dialog/index"
+  }
+}

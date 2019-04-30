@@ -1,0 +1,102 @@
+/* miniprogram/pages/home/index.wxss */
+button{
+  padding:0;
+  margin:0;
+  line-height: 36rpx;
+  height:36rpx;
+}
+.button-hover{
+  background-color: #fff;
+  color:#000
+}
+.head{
+  position: relative;
+  width: 750rpx;
+  height:400rpx;
+}
+.search{
+  z-index: 2;
+  position: absolute;
+  left:30rpx;
+  bottom:0;
+  width: 690rpx;
+  height: 100rpx;
+  border-radius: 10rpx;
+  background-color:#fff;
+  box-shadow: 0 0 2px 1px #eee;
+}
+.search input{
+  width:590rpx;
+}
+.banner-img{
+  z-index: 0;
+  position: absolute;
+  left: 0;
+  top:0;
+  width: 750rpx;
+  height:350rpx;
+}
+.yyzj{
+  position: relative;
+  padding-top:40px;
+}
+.yyzj .edit{
+  position: absolute;
+  right:50rpx;
+  top:90rpx;
+}
+.ava-box{
+  position: absolute;
+  left:20rpx;
+  top:20rpx;
+  width: 160rpx;
+  height:160rpx;
+}
+.ava-box .ava-bg{
+  position: absolute;
+  left:0;
+  top:0;
+  width: 160rpx;
+  height: 160rpx;
+}
+.ava{
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  overflow: hidden;
+  padding-top:40rpx;
+  padding-right:10rpx;
+}
+.prover-box{
+  border-radius: 10rpx;
+  width: 560rpx;
+  padding:30rpx;
+  box-shadow: 0 0 4px 1px #f2f2f2;
+  text-align: center;
+}
+.prover-box view{
+  margin-bottom: 20px;
+}
+.article-content{
+  margin-top:20px;
+}
+.date{
+  width: 100%;
+  text-align: left;
+  margin-bottom: 20px;
+  padding-left:20rpx;
+  font-size:36rpx;
+  letter-spacing: 1px
+}
+.content{
+  font-size:24rpx;
+  text-indent:2em;
+  color:#666;
+  padding:10rpx 0;
+}
+.arts{
+  margin-bottom: 20px;
+}
+.more{
+  padding:30rpx 10rpx 0 10rpx;
+}
