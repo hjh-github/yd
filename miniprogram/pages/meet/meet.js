@@ -55,6 +55,7 @@ Page({
           init: false
         })
         wx.hideNavigationBarLoading();
+        wx.vibrateShort();
         // wx.lin.showMessage({
         //   type: 'success',
         //   content: "好的遇见，从不嫌多（刷新成功）"

@@ -27,7 +27,6 @@ Component({
       })
     },
     keepin(){
-      console.log(12312)
       wx.navigateTo({
         url: '/pages/keepIn/keepIn',
       })

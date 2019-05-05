@@ -1,3 +1,6 @@
 {
-  "usingComponents": {}
+  "usingComponents": {
+    "l-textarea": "../../miniprogram_npm/lin-ui/textarea/index",
+    "l-toast": "../../miniprogram_npm/lin-ui/toast/index"
+  }
 }

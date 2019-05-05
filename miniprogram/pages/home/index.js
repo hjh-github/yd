@@ -13,19 +13,50 @@ Page({
     home: {},
     edit: false,
     newMotto: '',
-    searchKey: ''
+    searchKey: '',
+    init:true
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-
+    let articles = this.setFy(globalData.dataJson.allAct);
+    let home = globalData.dataJson.home;
+    home.articles = articles;
     this.setData({
       banner: globalData.banner_img,
       theme: globalData.theme,
-      home: globalData.dataJson.home
+      home,
+      init:false
     })
+    
+  },
+  // 模拟取值
+  setFy(allAct) {
+    let articles = [];
+    for (let i in allAct) {
+      if (!articles.length) {
+        articles.unshift({
+          date: allAct[i].date,
+          ats: [allAct[i]]
+        })
+      } else {
+        let inx = articles.findIndex((e) => {
+          return e.date == allAct[i].date
+        })
+        if (inx == -1) {
+          articles.push({
+            date: allAct[i].date,
+            ats: [allAct[i]]
+          })
+        }else{
+          articles[inx].ats.unshift(allAct[i])
+        }
+      }
+
+    }
+    return articles;
   },
   ret() {
     return false;
@@ -175,6 +206,16 @@ Page({
       this.getTabBar()) {
       this.getTabBar().setData({
         selected: 0
+      })
+    }
+    if(!this.data.init){
+      let articles = this.setFy(globalData.dataJson.allAct);
+      let home = globalData.dataJson.home;
+      home.articles = articles;
+      this.setData({
+        banner: globalData.banner_img,
+        theme: globalData.theme,
+        home
       })
     }
   },
