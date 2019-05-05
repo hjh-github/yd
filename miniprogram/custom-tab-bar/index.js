@@ -10,7 +10,7 @@ Component({
         "selectedIconPath": "/images/icon_component_HL.png"
       },
       {
-        "pagePath": "/page/index/index",
+        "pagePath": "/pages/meet/meet",
         "iconPath": "/images/icon_API.png",
         "selectedIconPath": "/images/icon_API_HL.png"
       }
@@ -24,6 +24,12 @@ Component({
       wx.switchTab({ url })
       this.setData({
         selected: data.index
+      })
+    },
+    keepin(){
+      console.log(12312)
+      wx.navigateTo({
+        url: '/pages/keepIn/keepIn',
       })
     }
   }

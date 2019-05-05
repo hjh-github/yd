@@ -6,8 +6,8 @@
     </cover-view>
   </cover-view>
 
-  <cover-view class="add">
+  <cover-view catchtap='keepin' class="add">
     <cover-image src="/images/new.png"></cover-image>
-    <cover-view>存档</cover-view>
+    <cover-view >存档</cover-view>
   </cover-view>
 </cover-view>

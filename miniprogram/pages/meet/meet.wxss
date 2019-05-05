@@ -1,0 +1,56 @@
+/* miniprogram/pages/meet/meet.wxss */
+
+page {
+  padding-bottom: 140rpx;
+  background-color: #fff;
+}
+
+button {
+  padding: 0;
+  margin: 0;
+  line-height: 36rpx;
+  height: 36rpx;
+}
+.tl{
+  width: 100%;
+  box-sizing: border-box;
+  padding:10px 34rpx 40rpx 300rpx;
+  transition: all 0.36s linear;
+  
+}
+.init {
+  margin-top: 100rpx;
+  color: #666;
+  font-size: 28rpx;
+  
+}
+.loaded{
+  margin-top:0;
+  color:#000;
+  font-size:32rpx;
+  text-align: left;
+  padding-left:34rpx;
+}
+.date {
+  width: 100%;
+  text-align: left;
+  margin-bottom: 20px;
+  padding-left: 20rpx;
+  font-size: 36rpx;
+  letter-spacing: 1px;
+}
+
+.content {
+  font-size: 24rpx;
+  text-indent: 2em;
+  color: #666;
+  padding: 10rpx 0;
+}
+
+.arts {
+  margin-bottom: 20px;
+}
+
+.more {
+  padding: 30rpx 10rpx 0 10rpx;
+}
