@@ -15,6 +15,9 @@
 .flex-c{
   align-items: center;
 }
+.flex-sa{
+  justify-content: space-around;
+}
 .flex-jc{
   justify-content: center;
 }

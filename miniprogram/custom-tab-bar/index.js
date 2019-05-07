@@ -10,10 +10,12 @@ Component({
         "selectedIconPath": "/images/icon_component_HL.png"
       },
       {
-        "pagePath": "/pages/meet/meet",
+        "pagePath": "/page/index/index",
+
         "iconPath": "/images/icon_API.png",
         "selectedIconPath": "/images/icon_API_HL.png"
       }
+      // "pagePath": "/pages/meet/meet",
     ]
   },
   attached() {},
@@ -21,12 +23,14 @@ Component({
     switchTab(e) {
       const data = e.currentTarget.dataset
       const url = data.path
-      wx.switchTab({ url })
+      wx.switchTab({
+        url
+      })
       this.setData({
         selected: data.index
       })
     },
-    keepin(){
+    keepin() {
       wx.navigateTo({
         url: '/pages/keepIn/keepIn',
       })

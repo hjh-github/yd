@@ -1,7 +1,12 @@
 // miniprogram/pages/home/index.js
 const app = getApp();
 const globalData = app.globalData;
-
+const {
+  auth
+} = require('../../utils/login.js')
+const { service } = require('../../utils/service.js')
+// 引用了这个  就可以用 async -- await
+const regeneratorRuntime = require('../../utils/runtime.js');
 Page({
 
   /**
@@ -14,13 +19,16 @@ Page({
     edit: false,
     newMotto: '',
     searchKey: '',
-    init:true
+    init: true
   },
-
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function(options) {
+  async onLoad(options) {
+    // 登录
+    let res = await auth.login();
+    globalData['openid'] = res.openid;
+
     let articles = this.setFy(globalData.dataJson.allAct);
     let home = globalData.dataJson.home;
     home.articles = articles;
@@ -28,9 +36,11 @@ Page({
       banner: globalData.banner_img,
       theme: globalData.theme,
       home,
-      init:false
+      init: false
     })
-    
+
+    // service.save()
+
   },
   // 模拟取值
   setFy(allAct) {
@@ -50,7 +60,7 @@ Page({
             date: allAct[i].date,
             ats: [allAct[i]]
           })
-        }else{
+        } else {
           articles[inx].ats.unshift(allAct[i])
         }
       }
@@ -208,7 +218,7 @@ Page({
         selected: 0
       })
     }
-    if(!this.data.init){
+    if (!this.data.init) {
       let articles = this.setFy(globalData.dataJson.allAct);
       let home = globalData.dataJson.home;
       home.articles = articles;
