@@ -10,12 +10,11 @@ Component({
         "selectedIconPath": "/images/icon_component_HL.png"
       },
       {
-        "pagePath": "/page/index/index",
-
+       "pagePath": "/pages/meet/meet",
         "iconPath": "/images/icon_API.png",
         "selectedIconPath": "/images/icon_API_HL.png"
       }
-      // "pagePath": "/pages/meet/meet",
+      
     ]
   },
   attached() {},

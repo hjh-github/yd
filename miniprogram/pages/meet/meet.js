@@ -1,6 +1,11 @@
 // miniprogram/pages/meet/meet.js
 const app = getApp();
 const globalData = app.globalData;
+const {
+  service
+} = require('../../utils/service.js')
+// 引用了这个  就可以用 async -- await
+const regeneratorRuntime = require('../../utils/runtime.js');
 Page({
 
   /**
@@ -14,31 +19,13 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function(options) {
-    wx.showNavigationBarLoading();
-    setTimeout(() => {
-      this.setData({
-        theme: globalData.theme,
-        home: globalData.dataJson.home,
-        loaded: true,
-        init: false
-      })
-      wx.hideNavigationBarLoading();
-    }, 800)
-
+  onLoad: async function(options) {
+    this.loadData();
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function() {
-
-  },
-
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function() {
+  onShow: async function() {
     if (typeof this.getTabBar === 'function' &&
       this.getTabBar()) {
       console.log(this.getTabBar())
@@ -47,52 +34,26 @@ Page({
       })
     }
     if (!this.data.init) {
-      wx.showNavigationBarLoading();
-      setTimeout(() => {
-        this.setData({
-          theme: globalData.theme,
-          home: globalData.dataJson.home,
-          init: false
-        })
-        wx.hideNavigationBarLoading();
-        wx.vibrateShort();
-        // wx.lin.showMessage({
-        //   type: 'success',
-        //   content: "好的遇见，从不嫌多（刷新成功）"
-        // })
-      }, 800)
+      await this.loadData();
+      wx.vibrateShort();
     }
 
   },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function() {
-
+  async loadData(page = 1, pageSize = 10) {
+    wx.showNavigationBarLoading();
+    let meets = await service.meets({
+      page,
+      pageSize
+    });
+    console.log(meets.data)
+    this.setData({
+      theme: globalData.theme,
+      articles: meets.data,
+      loaded: true,
+      init: false
+    })
+    wx.hideNavigationBarLoading();
   },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function() {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function() {
-
-  },
-
   /**
    * 用户点击右上角分享
    */

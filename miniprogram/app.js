@@ -1,5 +1,6 @@
 //app.js
 const dataJson = require('./utils/json.js')
+
 App({
   onLaunch: function () {
     

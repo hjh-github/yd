@@ -1,72 +1,27 @@
 // miniprogram/pages/atc_detail/detail.js
 const app = getApp();
 const globalData = app.globalData;
+const {
+  service
+} = require('../../utils/service.js')
+// 引用了这个  就可以用 async -- await
+const regeneratorRuntime = require('../../utils/runtime.js');
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-    config:{},
-    theme:''
+    config: {},
+    theme: ''
   },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (opt) {
+  onLoad: async function(opt) {
+    let {data} = await service.getAtcDetail(opt.id)
     this.setData({
-      config: globalData.dataJson.allAct[opt.id],
-      theme: globalData.theme,
+      config: data,
+      theme: globalData.theme
     })
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
+  onShareAppMessage: function() {
 
   }
 })

@@ -18,6 +18,9 @@
 .flex-sa{
   justify-content: space-around;
 }
+.flex-sb{
+  justify-content: space-between;
+}
 .flex-jc{
   justify-content: center;
 }

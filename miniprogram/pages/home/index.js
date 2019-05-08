@@ -19,54 +19,46 @@ Page({
     edit: false,
     newMotto: '',
     searchKey: '',
-    init: true
+    init: true,
+    logged:false
   },
   /**
    * 生命周期函数--监听页面加载
    */
   async onLoad(options) {
     // 登录
-    let res = await auth.login();
-    globalData['openid'] = res.openid;
-
-    let articles = this.setFy(globalData.dataJson.allAct);
-    let home = globalData.dataJson.home;
-    home.articles = articles;
-    this.setData({
-      banner: globalData.banner_img,
-      theme: globalData.theme,
-      home,
-      init: false
-    })
+    let authInfo = await auth.login();
+    globalData['openid'] = authInfo.openid;
+    this.loadData();
 
     // service.save()
 
   },
-  // 模拟取值
-  setFy(allAct) {
-    let articles = [];
-    for (let i in allAct) {
-      if (!articles.length) {
-        articles.unshift({
-          date: allAct[i].date,
-          ats: [allAct[i]]
-        })
-      } else {
-        let inx = articles.findIndex((e) => {
-          return e.date == allAct[i].date
-        })
-        if (inx == -1) {
-          articles.push({
-            date: allAct[i].date,
-            ats: [allAct[i]]
-          })
-        } else {
-          articles[inx].ats.unshift(allAct[i])
-        }
-      }
-
+  /**
+  * 生命周期函数--监听页面显示
+  */
+  onShow: function () {
+    if (typeof this.getTabBar === 'function' &&
+      this.getTabBar()) {
+      this.getTabBar().setData({
+        selected: 0
+      })
     }
-    return articles;
+    if (!this.data.init) {
+      this.loadData();
+    }
+  },
+ async loadData(){
+   wx.showNavigationBarLoading();
+    let homeData = await service.home();
+    let home = homeData.data;
+    this.setData({
+      banner: globalData.banner_img,
+      theme: globalData.theme,
+      home: home,
+      init: false
+    })
+    wx.hideNavigationBarLoading();
   },
   ret() {
     return false;
@@ -140,7 +132,7 @@ Page({
     }, 300)
   },
   // 编辑按钮
-  editMotto() {
+async  editMotto(e) {
     if (!this.data.edit) {
       this.data.newMotto = globalData.dataJson.home.motto;
       this.setData({
@@ -148,9 +140,17 @@ Page({
       })
     } else {
       if (this.data.newMotto != globalData.dataJson.home.motto) {
+        let userInfo = {};
+        if (!this.logged && e.detail.userInfo) {
+          userInfo = e.detail.userInfo
+        }
+        let res = await service.motto({ value: this.data.newMotto, user: userInfo});
+        
+        console.log(res)
         globalData.dataJson.home.motto = this.data.newMotto;
       }
       this.setData({
+        logged:true,
         edit: !this.data.edit,
         home: globalData.dataJson.home
       })
@@ -208,27 +208,7 @@ Page({
 
   },
   // check id
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function() {
-    if (typeof this.getTabBar === 'function' &&
-      this.getTabBar()) {
-      this.getTabBar().setData({
-        selected: 0
-      })
-    }
-    if (!this.data.init) {
-      let articles = this.setFy(globalData.dataJson.allAct);
-      let home = globalData.dataJson.home;
-      home.articles = articles;
-      this.setData({
-        banner: globalData.banner_img,
-        theme: globalData.theme,
-        home
-      })
-    }
-  },
+ 
   // 去详情
   toDetaile(e) {
     let id = e.target.dataset.id || e.currentTarget.dataset.id;
