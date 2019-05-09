@@ -147,27 +147,31 @@ Page({
       id,
       visible
     });
-    console.log(res)
     wx.hideNavigationBarLoading();
     wx.lin.showMessage({
       type: 'success',
       content: visible ? '这是我的私密文章（设为私密）' : "真是一篇值得分享的文章（公开文章）"
     })
+    this.loadData();
   },
   // 编辑按钮
   async editMotto(e) {
+    // 未修改，则不保存
     if (!this.data.edit) {
       this.data.newMotto = globalData.dataJson.home.motto;
       this.setData({
         edit: !this.data.edit
       })
     } else {
+      // 有修改才保存
       if (this.data.newMotto != globalData.dataJson.home.motto) {
         let userInfo = {};
+        // 获取用户信息，若本次启动小程序已经获取过则不再获取
         if (!this.logged && e.detail.userInfo) {
           userInfo = e.detail.userInfo
         }
         wx.showNavigationBarLoading()
+        // 保存
         let res = await service.motto({
           value: this.data.newMotto,
           user: userInfo
