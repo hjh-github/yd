@@ -23,8 +23,40 @@ exports.main = async(event, context) => {
       errmsg: '文章不存在'
     }
   }
+  if (_db.data._openid != event.userInfo.openid) {
+    return {
+      data: false,
+      errcode: 101,
+      errmsg: '只能修改自己的文章'
+    }
+  }
+  if (event.remove) {
+    try {
+      await db.collection('articles').where({
+        _id: event.id
+      }).remove();
+    } catch (err) {
+      return {
+        data: false,
+        errcode: 101,
+        errmsg: err
+      }
+    }
+
+  }
+  if (event.visible != -1) {
+    is1 =  await db.collection('articles').where({
+      _id: event.id
+    }).update({
+      data: {
+        "visible": event.visible
+      }
+    })
+  }
+
   return {
-    data: _db.data[0],
+    event,
+    data: true,
     errcode: 0,
     errmsg: 'success'
   };

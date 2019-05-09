@@ -43,6 +43,7 @@ exports.main = async(event, context) => {
     }
   }
   return {
+    event,
     errcode: 0,
     errmsg: 'success',
     data: event.value

@@ -20,4 +20,12 @@ export class service extends base {
   static meets(data){
     return this.fetch('meets', data)
   }
+  // home more 
+  static ownMore(data){
+    return this.fetch('meets', {...data,owner:1})
+  }
+  // 自己的文章 显示隐藏
+  static lock(data){
+    return this.fetch('ctrlMyatc', data)
+  }
 }

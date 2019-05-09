@@ -1,5 +1,22 @@
 <!--miniprogram/pages/atc_detail/detail.wxml-->
-<view class="flex flex-y container">
+<!-- 骨架图 -->
+<view wx:if="{{!loaded}}" class="flex flex-y container">
+  <view class="bgInit" style="width:500rpx;height:50rpx;margin-top:10px"></view>
+  <view class="bgInit" style="width:300rpx;height:30rpx; margin-top:10px"></view>
+  <view class="bgInit" style="width:690rpx;height:300rpx; margin-top:10px"></view>
+  <view class="bgInit" style="width:690rpx;height:30rpx; margin-top:20px"></view>
+  <view class="bgInit" style="width:650rpx;height:30rpx; margin-top:20px"></view>
+  <view class="bgInit" style="width:600rpx;height:30rpx; margin-top:20px"></view>
+  <view class="bgInit" style="width:690rpx;height:30rpx; margin-top:20px"></view>
+  <view class="bgInit" style="width:200rpx;height:30rpx; margin-top:20px"></view>
+  <view class="bgInit" style="width:500rpx;height:30rpx; margin-top:20px"></view>
+  <view class="bgInit" style="width:300rpx;height:30rpx; margin-top:20px"></view>
+  <view class="bgInit" style="width:690rpx;height:30rpx; margin-top:20px"></view>
+  <view class="bgInit" style="width:200rpx;height:30rpx; margin-top:20px"></view>
+  <view class="bgInit" style="width:500rpx;height:30rpx; margin-top:20px"></view>
+  <view class="bgInit" style="width:300rpx;height:30rpx; margin-top:20px"></view>
+</view>
+<view wx:if="{{loaded}}" class="flex flex-y container">
   <view class="title two-line">{{config.title}}</view>
   <view class="tips"><text>来源：<text style="color:{{theme}};padding-right:20px">{{config.author}}</text></text><text>{{config.date}}</text></view>
   <view class='banner'>

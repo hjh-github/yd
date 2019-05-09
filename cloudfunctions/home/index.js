@@ -29,12 +29,12 @@ exports.main = async(event, context) => {
       errmsg: '用户不存在'
     }
   }
-  // 查用户文章
+  // 查用户文章 第一页只查询10个
   try {
     await db.collection('articles').where({
       _openid: event.userInfo.openId
-    }).get().then(r => {
-      data['articles'] = setFy(r.data);
+    }).skip(0).limit(10).get().then(r => {
+      data['articles'] = r.data;
     })
   } catch (err) {
     console.log(err)
@@ -45,34 +45,9 @@ exports.main = async(event, context) => {
     }
   }
   return {
+    event,
     data,
     errcode: 0,
     errmsg: 'success'
   }
-}
-// 先重组文章数据为以日期为索引
-function setFy(allAct) {
-  let articles = [];
-  for (let i in allAct) {
-    if (!articles.length) {
-      articles.unshift({
-        date: allAct[i].date,
-        ats: [allAct[i]]
-      })
-    } else {
-      let inx = articles.findIndex((e) => {
-        return e.date == allAct[i].date
-      })
-      if (inx == -1) {
-        articles.push({
-          date: allAct[i].date,
-          ats: [allAct[i]]
-        })
-      } else {
-        articles[inx].ats.unshift(allAct[i])
-      }
-    }
-
-  }
-  return articles;
 }

@@ -46,6 +46,7 @@ exports.main = async(event, context) => {
   // console.log 的内容可以在云开发云函数调用日志查看
 
   return {
+    event,
     errcode: 0,
     errmsg: 'success',
     openid: wxContext.OPENID,

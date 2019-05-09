@@ -9,14 +9,18 @@ const regeneratorRuntime = require('../../utils/runtime.js');
 Page({
   data: {
     config: {},
-    theme: ''
+    theme: '',
+    loaded:false,
   },
   onLoad: async function(opt) {
+    wx.showNavigationBarLoading();
     let {data} = await service.getAtcDetail(opt.id)
     this.setData({
       config: data,
-      theme: globalData.theme
+      theme: globalData.theme,
+      loaded:true
     })
+    wx.hideNavigationBarLoading();
   },
   /**
    * 用户点击右上角分享

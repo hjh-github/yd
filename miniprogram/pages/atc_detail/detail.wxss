@@ -8,6 +8,7 @@
   width: 690rpx;
   margin: 0 auto;
   text-align: left;
+  align-items: flex-start;
 }
 
 .title {
@@ -29,4 +30,8 @@
   margin:20px 0;
   font-size:30rpx;
   color:#555;
+}
+.bgInit{
+  background-color: #f2f2f2;
+  border-radius: 10rpx;
 }

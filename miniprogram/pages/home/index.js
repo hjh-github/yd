@@ -4,7 +4,9 @@ const globalData = app.globalData;
 const {
   auth
 } = require('../../utils/login.js')
-const { service } = require('../../utils/service.js')
+const {
+  service
+} = require('../../utils/service.js')
 // 引用了这个  就可以用 async -- await
 const regeneratorRuntime = require('../../utils/runtime.js');
 Page({
@@ -20,7 +22,10 @@ Page({
     newMotto: '',
     searchKey: '',
     init: true,
-    logged:false
+    logged: false,
+    moring: false,
+    articles: [],
+    page: 1
   },
   /**
    * 生命周期函数--监听页面加载
@@ -35,9 +40,9 @@ Page({
 
   },
   /**
-  * 生命周期函数--监听页面显示
-  */
-  onShow: function () {
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function() {
     if (typeof this.getTabBar === 'function' &&
       this.getTabBar()) {
       this.getTabBar().setData({
@@ -48,17 +53,46 @@ Page({
       this.loadData();
     }
   },
- async loadData(){
-   wx.showNavigationBarLoading();
+  async loadData() {
+    wx.showNavigationBarLoading();
     let homeData = await service.home();
-    let home = homeData.data;
+    let home = JSON.parse(JSON.stringify(homeData.data));
+    home.articles = this.setFy(homeData.data.articles);
     this.setData({
+      articles: homeData.data.articles,
       banner: globalData.banner_img,
       theme: globalData.theme,
       home: home,
-      init: false
+      init: false,
+      page: 1
     })
     wx.hideNavigationBarLoading();
+  },
+  // 先重组文章数据为以日期为索引
+  setFy(allAct) {
+    let articles = [];
+    for (let i in allAct) {
+      if (!articles.length) {
+        articles.unshift({
+          date: allAct[i].date,
+          ats: [allAct[i]]
+        })
+      } else {
+        let inx = articles.findIndex((e) => {
+          return e.date == allAct[i].date
+        })
+        if (inx == -1) {
+          articles.push({
+            date: allAct[i].date,
+            ats: [allAct[i]]
+          })
+        } else {
+          articles[inx].ats.unshift(allAct[i])
+        }
+      }
+
+    }
+    return articles;
   },
   ret() {
     return false;
@@ -105,34 +139,23 @@ Page({
 
   },
   // 设置文章显示
-  canShow(e) {
-    const self = this;
+  async canShow(e) {
     wx.showNavigationBarLoading();
     let id = e.target.dataset.id;
-    let date = e.target.dataset.date;
-    let data = globalData.dataJson.home.articles;
-    let visible = e.target.dataset.visible;
-    let inx = data.findIndex(e => {
-      return e.date == date
+    let visible = e.target.dataset.visible ? 0 : 1;
+    let res = await service.lock({
+      id,
+      visible
+    });
+    console.log(res)
+    wx.hideNavigationBarLoading();
+    wx.lin.showMessage({
+      type: 'success',
+      content: visible ? '这是我的私密文章（设为私密）' : "真是一篇值得分享的文章（公开文章）"
     })
-    let todelInx = data[inx].ats.findIndex(e => {
-      return e.id == id
-    })
-    data[inx].ats[todelInx].visible = !visible;
-    globalData.dataJson.home.articles = data;
-    setTimeout(() => {
-      wx.hideNavigationBarLoading();
-      self.setData({
-        home: globalData.dataJson.home
-      })
-      wx.lin.showMessage({
-        type: 'success',
-        content: visible ? '这是我的私密文章（设为私密）' : "真是一篇值得分享的文章（公开文章）"
-      })
-    }, 300)
   },
   // 编辑按钮
-async  editMotto(e) {
+  async editMotto(e) {
     if (!this.data.edit) {
       this.data.newMotto = globalData.dataJson.home.motto;
       this.setData({
@@ -144,16 +167,21 @@ async  editMotto(e) {
         if (!this.logged && e.detail.userInfo) {
           userInfo = e.detail.userInfo
         }
-        let res = await service.motto({ value: this.data.newMotto, user: userInfo});
-        
+        wx.showNavigationBarLoading()
+        let res = await service.motto({
+          value: this.data.newMotto,
+          user: userInfo
+        });
+
         console.log(res)
         globalData.dataJson.home.motto = this.data.newMotto;
       }
       this.setData({
-        logged:true,
+        logged: true,
         edit: !this.data.edit,
         home: globalData.dataJson.home
       })
+      wx.hideNavigationBarLoading()
       wx.lin.showMessage({
         type: 'success',
         content: '这真是一句铭心之语！（修改成功）'
@@ -208,7 +236,7 @@ async  editMotto(e) {
 
   },
   // check id
- 
+
   // 去详情
   toDetaile(e) {
     let id = e.target.dataset.id || e.currentTarget.dataset.id;
@@ -228,8 +256,31 @@ async  editMotto(e) {
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function() {
-
+  onReachBottom: async function() {
+    this.setData({
+      moring: 'loading'
+    })
+    let page = this.data.page + 1;
+    let articles = await service.ownMore({
+      page,
+      pageSize: 10
+    });
+    if (articles.data.length > 0) {
+      let newArticles = this.data.articles.concat(articles.data);
+      this.data.home.articles = this.setFy(newArticles);
+      console.log(this.data.home)
+      this.setData({
+        articles: newArticles,
+        home: this.data.home,
+        moring: '',
+        page: page
+      })
+    }
+    if (!articles.data.length) {
+      this.setData({
+        moring: 'end'
+      })
+    }
   },
 
   /**

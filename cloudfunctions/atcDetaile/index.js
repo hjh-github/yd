@@ -24,6 +24,7 @@ exports.main = async(event, context) => {
     }
   }
   return {
+    event,
     data: _db.data[0],
     errcode: 0,
     errmsg: 'success'

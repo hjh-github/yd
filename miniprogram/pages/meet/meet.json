@@ -1,6 +1,8 @@
 {
   "usingComponents": {
+    "loadmore": "../../miniprogram_npm/lin-ui/loadmore/index",
     "l-card": "../../miniprogram_npm/lin-ui/card/index"
   },
-  "navigationBarTitleText": "Meet"
+  "navigationBarTitleText": "Meet",
+  "onReachBottomDistance":20
 }

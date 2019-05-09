@@ -28,7 +28,6 @@ Page({
   onShow: async function() {
     if (typeof this.getTabBar === 'function' &&
       this.getTabBar()) {
-      console.log(this.getTabBar())
       this.getTabBar().setData({
         selected: 1
       })
@@ -45,19 +44,53 @@ Page({
       page,
       pageSize
     });
-    console.log(meets.data)
-    this.setData({
+    await this.setData({
       theme: globalData.theme,
       articles: meets.data,
       loaded: true,
-      init: false
+      init: false,
+      page
     })
     wx.hideNavigationBarLoading();
+  },
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom: async function() {
+    this.setData({
+      moring: 'loading'
+    })
+    let page = this.data.page + 1;
+    let articles = await service.ownMore({
+      page,
+      pageSize: 10
+    });
+    if (articles.data.length > 0) {
+      let newArticles = this.data.articles.concat(articles.data);
+      this.setData({
+        articles: newArticles,
+        moring: '',
+        page: page
+      })
+    }
+    if (!articles.data.length) {
+      this.setData({
+        moring: 'end'
+      })
+    }
   },
   /**
    * 用户点击右上角分享
    */
   onShareAppMessage: function() {
-
+    if (e.from === 'menu') {
+      return {};
+    }
+    return {
+      title: e.target.dataset.title,
+      path: `/pages/atc_detail/detail?id=${e.target.dataset.id}`,
+      imageUrl: e.target.dataset.image
+    };
   }
+
 })

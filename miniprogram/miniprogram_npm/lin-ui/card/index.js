@@ -19,6 +19,9 @@ Component({
     type: {
       type: String,
       value: 'primary'
+    },
+    style:{
+      type: String
     }
   },
 
