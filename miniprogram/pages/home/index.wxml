@@ -23,32 +23,47 @@
     </button>
     <view class='prover-box'>
       <view>一语箴已</view>
-      <textarea style="line-height:1.556;word-wrap:break-word" wx:if="{{edit}}" focus='{{edit}}' value='{{home.motto}}' bindinput="mottoFy" placeholder='一句可以让你警觉的话'></textarea>
+      <textarea style="line-height:1.556;word-wrap:break-word" wx:if="{{edit}}" focus='{{edit}}' value='{{home.motto}}' bindinput="mottoFy" placeholder='能拉住你的话是什么呢？'></textarea>
       <text style="line-height:1.556;word-wrap:break-word" wx:else>{{home.motto}}</text>
+      <text style="line-height:1.556;word-wrap:break-word;color:#888" wx:if="{{!home.motto && !edit}}">一语思人，一语律己</text>
     </view>
   </view>
   <!-- 列表 -->
   <view class="article-content flex flex-y flex-c">
-    <loadmore show="{{moring}}" type="{{moring}}" end-text="这是我们的开始~（已加载全部）" loading-text="拾忆中…">
-      <view slot="content" >
-      <view class="flex flex-y flex-c">
-        <block wx:for="{{home.articles}}" wx:key="arrs" wx:for-item="atc">
-          <view class="date">{{atc.date}}</view>
-          <block wx:for="{{atc.ats}}" wx:key="arr" wx:for-item="item">
-            <!-- cover -->
-            <l-card style="margin-bottom:20px" type="cover" data-id="{{item._id}}" image="{{item.image_url}}" title="{{item.title}}" bindtap="toDetaile">
-              <view class="content">{{item.digest}}</view>
-              <view class="flex flex-c more" catchtap='ret'>
-                <!-- <l-icon class="p-r-40" name="like" color="{{theme}}" /> -->
-                <l-icon size='36' data-id="{{item._id}}" data-date="{{atc.date}}" data-visible="{{item.visible}}" catchtap='canShow' class="p-r-40" name="{{item.visible?'eye':'password'}}" color="{{theme}}" />
-                <button data-id="{{item._id}}" data-title="{{item.title}}" data-image="{{item.image_url}}" open-type="share" hover-stop-propagation="true" class="p-r-40">
-                  <l-icon size='34' name="share" color="{{theme}}" />
-                </button>
-                <l-icon data-id="{{item._id}}" data-date="{{atc.date}}" catchtap='deleteFy' size='36' class="p-r-40" name="delete" color="{{theme}}" />
-              </view>
-            </l-card>
+    <loadmore show="{{moring && home.articles.length}}" type="{{moring}}" end-text="这是我们的开始~（已加载全部）" loading-text="拾忆中…">
+      <view slot="content">
+        <view class="flex flex-y flex-c">
+          <view wx:if="{{!home.articles.length}}" class="emtry" style='text-align:center;color:#888;font-size:26rpx'>
+            <view>千里之行，始于足下</view>
+            <view>先存档</view>
+            <view>开启言档</view>
+            <view style="transform: rotate(-90deg)">
+              <l-icon size='24' name="forward" color="#888" />
+            </view>
+            <view style="transform: rotate(-90deg)">
+              <l-icon size='34' name="forward" color="#444" />
+            </view>
+            <view style="transform: rotate(-90deg)">
+              <l-icon size='44' name="forward" color="#000" />
+            </view>
+          </view>
+          <block wx:for="{{home.articles}}" wx:key="arrs" wx:for-item="atc">
+            <view class="date">{{atc.date}}</view>
+            <block wx:for="{{atc.ats}}" wx:key="arr" wx:for-item="item">
+              <!-- cover -->
+              <l-card style="margin-bottom:20px" type="cover" data-id="{{item._id}}" image="{{item.image_url}}" title="{{item.title}}" bindtap="toDetaile">
+                <view class="content">{{item.digest}}</view>
+                <view class="flex flex-c more" catchtap='ret'>
+                  <!-- <l-icon class="p-r-40" name="like" color="{{theme}}" /> -->
+                  <l-icon size='36' data-id="{{item._id}}" data-date="{{atc.date}}" data-visible="{{item.visible}}" catchtap='canShow' class="p-r-40" name="{{item.visible?'eye':'password'}}" color="{{theme}}" />
+                  <button data-id="{{item._id}}" data-title="{{item.title}}" data-image="{{item.image_url}}" open-type="share" hover-stop-propagation="true" class="p-r-40">
+                    <l-icon size='34' name="share" color="{{theme}}" />
+                  </button>
+                  <l-icon data-id="{{item._id}}" data-date="{{atc.date}}" catchtap='deleteFy' size='36' class="p-r-40" name="delete" color="{{theme}}" />
+                </view>
+              </l-card>
+            </block>
           </block>
-        </block>
         </view>
       </view>
     </loadmore>

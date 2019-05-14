@@ -37,6 +37,7 @@ exports.main = async(event, context) => {
       }).remove();
     } catch (err) {
       return {
+        event,
         data: false,
         errcode: 101,
         errmsg: err
@@ -45,7 +46,7 @@ exports.main = async(event, context) => {
 
   }
   if (event.visible != -1) {
-    is1 =  await db.collection('articles').where({
+      await db.collection('articles').where({
       _id: event.id
     }).update({
       data: {

@@ -1,21 +1,25 @@
 <!--miniprogram/pages/keepIn/keepIn.wxml-->
-<view class="flex flex-y container">
+<view wx:if="{{!auth}}"> 模拟一下而已 </view>
+<view wx:if="{{auth}}" class="flex flex-y container" style='padding-bottom:80rpx;'>
   <view class="title two-line">
-    <input placeholder='标题' bindinput='titleFy'></input>
+    <input placeholder='A memory ... ' bindinput='titleFy'></input>
   </view>
   <view class='banner' bindtap='chooseImg'>
     <image mode='widthFix' src="{{image_url}}" class='banner'></image>
   </view>
   <l-textarea l-class="content" bind:linchange='contentFy' maxlength="5000" placeholder="今天又遇到了很多让你开心的事情，存个档呗~" />
-  <view class="w100 flex flex-c flex-sb" style='padding-bottom:80rpx;'>
+  
+  <l-input label="文章来源" bind:linchange="sourceFy" label-width="150" placeholder-style="color:#ccc;font-size:24rpx;text-align: left;width:100%" label-layout="center" placeholder="建议原创，一点都不想你填"  />
+  <view style="color:#ccc;font-size:24rpx;text-align: left;width:100%;margin-top:3px">* 引用文章时请注明来源，不填则为原创</view>
+  <view class="w100 flex flex-c flex-sb" style="height:100rpx;">
     <view calss="flex flex-c">
       <l-icon size='36' data-visible="{{visible}}" catchtap='canShow' class="p-r-40" name="{{visible?'eye':'password'}}" color="{{theme}}" />
     </view>
-    <button 
+  </view>
+  <button 
       open-type="getUserInfo" 
       bindgetuserinfo="save"
       class="save"
     >保存</button>
-  </view>
   <l-toast />
 </view>

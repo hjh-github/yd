@@ -8,7 +8,7 @@
         <view class="article-content flex flex-y flex-c">
           <block wx:for="{{articles}}" wx:key="arr" wx:for-item="item">
             <!-- cover -->
-            <l-card wx:if="{{item.visible}}" class="arts" type="cover" data-id="{{item.id}}" image="{{item.image_url}}" title="{{item.title}}" bindtap="toDetaile">
+            <l-card wx:if="{{item.visible}}" class="arts" type="cover" data-id="{{item._id}}" image="{{item.image_url}}" title="{{item.title}}" bindtap="toDetaile">
               <view class="content">{{item.digest}}</view>
               <view class="flex flex-c more" catchtap='ret'>
                 <!-- <l-icon class="p-r-40" name="like" color="{{theme}}" /> -->

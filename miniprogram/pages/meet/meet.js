@@ -53,6 +53,14 @@ Page({
     })
     wx.hideNavigationBarLoading();
   },
+  // 去详情
+  toDetaile(e) {
+    let id = e.target.dataset.id || e.currentTarget.dataset.id;
+    console.log(e)
+    wx.navigateTo({
+      url: `/pages/atc_detail/detail?id=${id}`,
+    })
+  },
   /**
    * 页面上拉触底事件的处理函数
    */

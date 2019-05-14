@@ -29,11 +29,25 @@ exports.main = async(event, context) => {
       errmsg: '用户不存在'
     }
   }
-  // 查用户文章 第一页只查询10个
+ 
+  // 是否添加了筛选条件进行刷新首页
+  let whereData = {
+    _openid: event.userInfo.openId,
+  }
+  if (event.search) {
+    whereData = {
+      _openid: event.userInfo.openId,
+      title: db.RegExp({
+        regexp: event.search,
+        //从搜索栏中获取的value作为规则进行匹配。
+        options: 'i',
+        //大小写不区分
+      })
+    }
+  }
+   // 查用户文章 第一页只查询10个
   try {
-    await db.collection('articles').where({
-      _openid: event.userInfo.openId
-    }).skip(0).limit(10).get().then(r => {
+    await db.collection('articles').where(whereData).skip(0).limit(10).get().then(r => {
       data['articles'] = r.data;
     })
   } catch (err) {

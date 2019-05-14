@@ -1,6 +1,14 @@
 // miniprogram/pages/keepIn/keepIn.js
 const app = getApp();
 const globalData = app.globalData;
+const {
+  Tools
+} = require('../../utils/tools.js')
+const {
+  service
+} = require('../../utils/service.js')
+// 引用了这个  就可以用 async -- await
+const regeneratorRuntime = require('../../utils/runtime.js');
 Page({
 
   /**
@@ -10,19 +18,30 @@ Page({
     visible: true,
     image_url: '',
     title: '',
-    content: ''
+    content: '',
+    source: '',
+    logged: false,
+    auth:false
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
+    console.log(globalData.auth)
     this.setData({
-      theme: globalData.theme
+      theme: globalData.theme,
+      auth: globalData.auth
     })
   },
-  save() {
+  sourceFy(e) {
+    this.setData({
+      source: e.detail.detail.value
+    })
+  },
+  async save(e) {
     let date = new Date();
+    const self = this;
     if (!this.data.title) {
       wx.lin.showToast({
         title: '言档怎可无名',
@@ -47,23 +66,29 @@ Page({
       })
       return false;
     }
-    //模拟 取到上一个id
-    let ids = [];
-    for (let i in globalData.dataJson.allAct) {
-      ids.push(Number(i))
+    let image_url = await Tools.uploadFile(this.data.image_url);
+    let userInfo = {};
+    // 获取用户信息，若本次启动小程序已经获取过则不再获取
+    if (!this.logged && e.detail.userInfo) {
+      userInfo = e.detail.userInfo
     }
-    let id = ids.sort()[ids.length - 1] + 1;
+    this.setData({
+      logged: true
+    })
     let act = {
-      id,
       title: this.data.title,
       content: this.data.content,
-      date: date.toLocaleDateString().replace(/\//g, '.'),
+      date: Tools.dateFormate(date, 'yyyy.MM.dd'),
       time: date.getTime(),
-      image_url: this.data.image_url,
-      visible: this.data.visible ? 1 : 0
+      image_url: image_url.file_url,
+      visible: this.data.visible ? 1 : 0,
+      source: this.data.source || userInfo.nickName,
+      avatarUrl: userInfo.avatarUrl,
+      isOriginal: this.data.source ? 0 : 1,
+
     }
-    globalData.dataJson.allAct[id] = act;
-    console.log(globalData.dataJson.allAct)
+    let res = await service.createAtc(act);
+    console.log(res)
     wx.lin.showToast({
       title: '保存成功',
       icon: 'success',
@@ -100,6 +125,13 @@ Page({
       success(res) {
         // tempFilePath可以作为img标签的src属性显示图片
         const tempFilePaths = res.tempFilePaths
+        if (res.tempFiles["0"].size > 1000000) {
+          wx.lin.showToast({
+            title: '你上传的图片太大啦！(<1M)',
+            icon: 'error',
+            iconStyle: 'size: 60'
+          })
+        }
         self.setData({
           image_url: tempFilePaths[0]
         })

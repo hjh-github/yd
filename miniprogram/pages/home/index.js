@@ -31,6 +31,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   async onLoad(options) {
+    let canShow = await service.auth();
+    globalData['auth'] = canShow.data;
+    console.log(canShow)
     // 登录
     let authInfo = await auth.login();
     globalData['openid'] = authInfo.openid;
@@ -55,7 +58,9 @@ Page({
   },
   async loadData() {
     wx.showNavigationBarLoading();
-    let homeData = await service.home();
+    let homeData = await service.home({
+      search: this.data.searchKey
+    });
     let home = JSON.parse(JSON.stringify(homeData.data));
     home.articles = this.setFy(homeData.data.articles);
     this.setData({
@@ -104,38 +109,27 @@ Page({
     })
   },
   // 搜索按钮
-  searchFy() {
+  async searchFy() {
     wx.showNavigationBarLoading();
-    let data = JSON.parse(JSON.stringify(globalData.dataJson.home));
-    let hasData = [];
-    data.articles.forEach((e) => {
-      let obj = {
-        date: e.date,
-        ats: []
-      }
-      e.ats.forEach((item, inx) => {
-        if (item.title.indexOf(this.data.searchKey) != -1) {
-          obj.ats.push(item)
-        }
-      })
-      if (obj.ats.length > 0) {
-        hasData.push(obj)
-      }
-    })
-    if (this.data.searchKey != '') {
-      data.articles = hasData;
-    }
+    let articles = await service.ownMore({
+      search: this.data.searchKey,
+      page: 1,
+      pageSize: 10
+    });
 
-    setTimeout(() => {
-      this.setData({
-        home: data
-      })
-      wx.hideNavigationBarLoading();
-      wx.lin.showMessage({
-        type: 'success',
-        content: '拾忆完毕！'
-      })
-    }, 500)
+    let newArticles = articles.data;
+    this.data.home.articles = this.setFy(newArticles);
+    this.setData({
+      articles: newArticles,
+      home: this.data.home
+    })
+
+    wx.hideNavigationBarLoading();
+    wx.lin.showMessage({
+      type: 'success',
+      content: '拾忆完毕！'
+    })
+
 
   },
   // 设置文章显示
@@ -176,20 +170,21 @@ Page({
           value: this.data.newMotto,
           user: userInfo
         });
+        wx.hideNavigationBarLoading()
+        if (res.errcode == 0) {
+          wx.lin.showMessage({
+            type: 'success',
+            content: '这真是一句铭心之语！（修改成功）'
+          })
 
-        console.log(res)
-        globalData.dataJson.home.motto = this.data.newMotto;
+        await this.loadData();
+          this.setData({
+            logged: true,
+            edit: !this.data.edit
+          })
+        }
       }
-      this.setData({
-        logged: true,
-        edit: !this.data.edit,
-        home: globalData.dataJson.home
-      })
-      wx.hideNavigationBarLoading()
-      wx.lin.showMessage({
-        type: 'success',
-        content: '这真是一句铭心之语！（修改成功）'
-      })
+
     }
 
   },
@@ -207,29 +202,19 @@ Page({
       showTitle: false,
       content: "继续删除这条很值得记忆的瞬间吗？",
       cancelColor: '#ccc',
-      success: (res) => {
+      success: async(res) => {
         if (res.confirm) {
           wx.showNavigationBarLoading();
           let id = e.target.dataset.id;
-          let date = e.target.dataset.date;
-          let data = globalData.dataJson.home.articles;
-          let inx = data.findIndex(e => {
-            return e.date == date
+          let res = await service.del({
+            id
+          });
+          wx.hideNavigationBarLoading();
+          wx.lin.showMessage({
+            type: 'success',
+            content: "真是一个糟糕的经历！（删除成功）"
           })
-          let todelInx = data[inx].ats.findIndex(e => {
-            return e.id == id
-          })
-          data[inx].ats.splice(todelInx, 1);
-          if (!data[inx].ats.length) {
-            data.splice(inx, 1)
-          }
-          globalData.dataJson.home.articles = data;
-          setTimeout(() => {
-            wx.hideNavigationBarLoading();
-            self.setData({
-              home: globalData.dataJson.home
-            })
-          }, 1500)
+          self.loadData();
 
         } else if (res.cancel) {
           console.log('用户点击取消')
@@ -266,13 +251,13 @@ Page({
     })
     let page = this.data.page + 1;
     let articles = await service.ownMore({
+      search: this.data.searchKey,
       page,
       pageSize: 10
     });
     if (articles.data.length > 0) {
       let newArticles = this.data.articles.concat(articles.data);
       this.data.home.articles = this.setFy(newArticles);
-      console.log(this.data.home)
       this.setData({
         articles: newArticles,
         home: this.data.home,

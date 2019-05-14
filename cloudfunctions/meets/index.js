@@ -13,17 +13,33 @@ const db = cloud.database();
 const _ = db.command
 
 // 云函数入口函数
-exports.main = async (event, context) => {
+exports.main = async(event, context) => {
   let _db = [];
-  if (!event.owner){
-    _db = await db.collection('articles').skip((Number(event.page) - 1) * event.pageSize).limit(event.pageSize).get();
-    // 这里是用的是home的文章分页
-  }else{
+  if (!event.owner) {
+    // 仅查询开放文章
     _db = await db.collection('articles').where({
-      _openid: event.userInfo.openId
+      visible: 1
     }).skip((Number(event.page) - 1) * event.pageSize).limit(event.pageSize).get();
+    
+  } else {
+    let whereData = {
+      _openid: event.userInfo.openId,
+    }
+    if (event.search) {
+      whereData = {
+        _openid: event.userInfo.openId,
+        title: db.RegExp({
+          regexp: event.search,
+          //从搜索栏中获取的value作为规则进行匹配。
+          options: 'i',
+          //大小写不区分
+        })
+      }
+    }
+    // 这里是用的是home的文章分页
+    _db = await db.collection('articles').where(whereData).skip((Number(event.page) - 1) * event.pageSize).limit(event.pageSize).get();
   }
-  
+
 
   return {
     event,

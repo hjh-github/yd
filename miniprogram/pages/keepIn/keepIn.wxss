@@ -20,7 +20,7 @@
 .title {
   width: 690rpx;
   font-size: 40rpx;
-  margin: 0 0 10px;
+  margin: 10px 0 10px;
   text-align: left;
 }
 
