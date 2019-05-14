@@ -3,7 +3,7 @@ export class Tools {
     return new Promise((resolve, reject) => {
       // 上传图片
       wx.uploadFile({
-        url: 'https://test0.kuan1.cn/oss/index.php?controller=index&action=upload_img', // 仅为示例，非真实的接口地址
+        url: 'https://***/oss/index.php?controller=index&action=upload_img', // 仅为示例，非真实的接口地址
         filePath: image_url,
         name: 'filename',
         success: function(res) {
