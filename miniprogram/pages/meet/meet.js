@@ -13,13 +13,18 @@ Page({
    */
   data: {
     loaded: false,
-    init: true
+    init: true,
+    auth:false
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: async function(options) {
+    this.setData({
+      theme: globalData.theme,
+      auth: globalData.auth
+    })
     this.loadData();
   },
   /**

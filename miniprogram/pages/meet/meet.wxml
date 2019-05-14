@@ -1,7 +1,7 @@
 <!--miniprogram/pages/meet/meet.wxml-->
 <view class="flex flex-y flex-c">
   <view class="tl {{loaded?'loaded':'init'}}">真好！遇见你…</view>
-  <view wx:if="{{loaded}}">
+  <view wx:if="{{loaded && auth}}">
     <!-- 列表 -->
     <loadmore show="{{moring}}" type="{{moring}}" end-text="这是我们的开始~（已加载全部）" loading-text="拾忆中…">
       <view slot="content">

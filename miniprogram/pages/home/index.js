@@ -25,7 +25,8 @@ Page({
     logged: false,
     moring: false,
     articles: [],
-    page: 1
+    page: 1,
+    auth:false
   },
   /**
    * 生命周期函数--监听页面加载
@@ -33,12 +34,13 @@ Page({
   async onLoad(options) {
     let canShow = await service.auth();
     globalData['auth'] = canShow.data;
-    console.log(canShow)
     // 登录
     let authInfo = await auth.login();
     globalData['openid'] = authInfo.openid;
     this.loadData();
-
+    this.setData({
+      auth: canShow.data
+    })
     // service.save()
 
   },

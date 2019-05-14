@@ -11,7 +11,7 @@
     <image src='{{banner}}' mode='aspectFill' class="banner-img"></image>
   </view>
   <!-- 头像 -->
-  <view class="w100 yyzj flex flex-c flex-jc">
+  <view class="w100 yyzj flex flex-c flex-jc" wx:if="{{auth}}">
     <view class='ava-box flex flex-c flex-jc'>
       <view class="ava">
         <open-data type="userAvatarUrl"></open-data>
@@ -21,7 +21,7 @@
     <button open-type="getUserInfo" bindgetuserinfo="editMotto" class="p-r-40 edit">
       <l-icon size='30' name="{{!edit?'edit':'success'}}" color="{{!edit?theme:'#09bb07'}}" />
     </button>
-    <view class='prover-box'>
+    <view class='prover-box' >
       <view>一语箴已</view>
       <textarea style="line-height:1.556;word-wrap:break-word" wx:if="{{edit}}" focus='{{edit}}' value='{{home.motto}}' bindinput="mottoFy" placeholder='能拉住你的话是什么呢？'></textarea>
       <text style="line-height:1.556;word-wrap:break-word" wx:else>{{home.motto}}</text>
@@ -29,7 +29,7 @@
     </view>
   </view>
   <!-- 列表 -->
-  <view class="article-content flex flex-y flex-c">
+  <view class="article-content flex flex-y flex-c" wx:if="{{auth}}">
     <loadmore show="{{moring && home.articles.length}}" type="{{moring}}" end-text="这是我们的开始~（已加载全部）" loading-text="拾忆中…">
       <view slot="content">
         <view class="flex flex-y flex-c">
